@@ -66,7 +66,7 @@ public class BookingRequestApplication {
 							list2.add(slot2);
 							
 							DestinationBO dest1=new DestinationBO(12122,"Tambaram",list1,list2);
-							repo2.save(dest1);
+							repo2.save(dest1); 
 					
 							
 							

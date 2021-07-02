@@ -5,6 +5,10 @@ var xmlGetAllDestinations=new XMLHttpRequest();
 var xmlGetFilteredRequests=new XMLHttpRequest();
 
 var xhrCount= new XMLHttpRequest();
+var filterApplied=false;
+var skip=0;     
+var limit=10; 
+var count;
 
 // To get Count of all the records with status booked
 
@@ -14,7 +18,7 @@ xhrCount.onreadystatechange=processResponseCount;
 xhrCount.send(null);
 }
 
-var count;
+
 
 function processResponseCount(){
 if(xhrCount.readyState == 4 && xhrCount.status == 200){
@@ -28,14 +32,21 @@ getTotalCount();
 
 
 
-var skip=0;
-var limit=10;   
+  
 
 // To set Date of Travel
 
-const date=new Date();
-const n=date.getDate(); const n1=date.getMonth()+1; const n2=date.getFullYear();
-document.getElementById("todayDate").innerHTML="Date of Travel: "+n+"/"+n1+"/"+n2;
+getDate();
+
+function getDate(){
+
+		const date=new Date();
+		const n=date.getDate(); const n1=date.getMonth()+1; const n2=date.getFullYear();
+		document.getElementById("todayDate").innerHTML="Date of Travel: "+n+"/"+n1+"/"+n2;
+
+}
+
+
 
 
 ///
@@ -62,7 +73,8 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
 					}
     	
     	$("#tableBody").empty();
-    	skip=0;filterApplied=true;
+    	skip=0;
+    	filterApplied=false;
     //	scrolled=true;
 	getTodaysBookings();
 	var filter=document.getElementById("filterButton");
@@ -78,6 +90,8 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
 
 function loadMethods()     // To load Today Bookings, source and Destination on Page Load
 {
+	
+	
 	getTodaysBookings();
 	getSource();
 	getDestination();
@@ -115,8 +129,8 @@ var cancelbtn=document.getElementById("cancelButton");
 ///
 
  
-var filterApplied=false;
-var scrolled=false;
+  
+
 
 // Scroll Function 
 document.getElementById("scrollTable").addEventListener('scroll',function() 
@@ -128,10 +142,11 @@ skip = skip + limit;
 if(filterApplied==false){
 getTodaysBookings();
 }else{
-	scrolled=true;
+	//scrolled=true;
+	
 getfilter();
-scrolled=false;
-filterApplied =false;
+//scrolled=false;
+filterApplied =true;
 
 
 }
@@ -455,6 +470,7 @@ document.getElementById("Destination").addEventListener('change',function()
 
 document.getElementById("ApplyButton").addEventListener('click',function()
 {
+	$("#tableBody").empty();skip=0;filterApplied=true;
 	getfilter();
 	changeFilter();
 	
@@ -462,20 +478,17 @@ document.getElementById("ApplyButton").addEventListener('click',function()
 
 function getfilter()
 {
-	if(filterApplied==false){
+	
 		
-		skip=0;
-		$("#tableBody").empty();
+		//skip=0;
+		//filterApplied=true;
+		//$("#tableBody").empty();
 		
-	}
-	
-	if(scrolled==false)
-	{
-		$("#tableBody").empty();
-	}
 	
 	
-	filterApplied=true;
+	
+	
+	
 	
 	var dest=document.querySelector('#Destination').value;
 
@@ -542,7 +555,8 @@ function getfilter()
       hours = parseInt(hours, 10) + 12;
    }
 
-time=hours+":"+minutes;
+time=hours+":"+minutes+":"+"00";
+
 
 	}
 	
@@ -682,6 +696,7 @@ function getFilters()
 		}
 		var countSpan=document.getElementById("counter");
 			countSpan.innerHTML=$('#tableBody tr').length+" out of "+count;
+
 	}
 	
 }

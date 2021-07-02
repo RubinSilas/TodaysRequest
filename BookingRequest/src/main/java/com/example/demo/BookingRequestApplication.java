@@ -61,9 +61,11 @@ public class BookingRequestApplication {
 							
 							TimeSlotBO slot1=new TimeSlotBO(LocalTime.of(21, 30));
 							TimeSlotBO slot2=new TimeSlotBO(LocalTime.of(20, 30));
+							TimeSlotBO slot3=new TimeSlotBO(LocalTime.of(00, 00));
 							List<TimeSlotBO> list2=new ArrayList<>();
 							list2.add(slot1);
 							list2.add(slot2);
+							list2.add(slot3);
 							
 							DestinationBO dest1=new DestinationBO(12122,"Tambaram",list1,list2);
 							repo2.save(dest1); 

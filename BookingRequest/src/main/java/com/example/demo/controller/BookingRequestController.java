@@ -34,6 +34,8 @@ public class BookingRequestController {
 	
 	
 	
+	
+	
 	// for adding requests
 	
 	@PostMapping(path="/bookings")
@@ -89,27 +91,55 @@ public class BookingRequestController {
 	          dynamicQuery.addCriteria(dropPointCriteria);
 	       }
 	       
-	     //  dynamicQuery.limit(limit).skip(skip);
+	       Criteria criteria = Criteria.where("status").is("booked");
+			dynamicQuery.addCriteria(criteria);
 	       
-	       List<BookingRequestBO> result=this.busy.filterRequests(dynamicQuery);
+			
 	       
-	       List<BookingRequestBO> result1=result.stream().skip(skip).limit(limit).collect(Collectors.toList());
+	    //   List<BookingRequestBO> result1=result.stream().skip(skip).limit(limit).collect(Collectors.toList());
 	       
 	      
 	       
 	       
 	       if (!(timeSlot.equals("0")))
 	       {
-	    	   LocalTime lt=LocalTime.parse(timeSlot);
-	           List<BookingRequestBO> timeFilter= result.stream().filter(e->e.getTimeSlot().equals(lt)).collect(Collectors.toList());
-	           List<BookingRequestBO> timeFilter1=timeFilter.stream().skip(skip).limit(limit).collect(Collectors.toList());
-	           return timeFilter1;
+//	    	   LocalTime lt=LocalTime.parse(timeSlot);
+//	           List<BookingRequestBO> timeFilter= result.stream().filter(e->e.getTimeSlot().equals(lt)).collect(Collectors.toList());
+//	        //   List<BookingRequestBO> timeFilter1=timeFilter.stream().skip(skip).limit(limit).collect(Collectors.toList());
+//	           return timeFilter;
+	    	   
+	    	   String splittedTimeSlot[] = timeSlot.split(":");
+	    	 //  System.out.println(splittedTimeSlot[0]);
+	    	   Criteria timeSlotCriteria =     Criteria.where("timeSlot").is(LocalTime.of(Integer.parseInt(splittedTimeSlot[0]), Integer.parseInt(splittedTimeSlot[1]), Integer.parseInt(splittedTimeSlot[2]))); 
+	    	    
+		          dynamicQuery.addCriteria(timeSlotCriteria);
 	    	   
 	       }
 	       
+	       dynamicQuery.limit(limit).skip(skip);
+	       
+	       List<BookingRequestBO> result=this.busy.filterRequests(dynamicQuery);
+	       
 
-	      return result1;
+	      return result;
 	   }
+	
+	//test
+	@GetMapping("/test")
+	public List<BookingRequestBO> getTime() {
+		
+		Query query = new Query();
+//		query.limit(limit).skip(skip);
+		Criteria sourceCriteria = Criteria.where("status").is("booked");
+		Criteria sourceCriteria1 = Criteria.where("timeSlot").is(LocalTime.of(00, 00, 00));
+		query.addCriteria(sourceCriteria);
+		query.addCriteria(sourceCriteria1);
+		
+		return this.busy.filterRequests(query);
+
+		
+	}
+	
 	
 	// to delete requests
 	
@@ -155,6 +185,25 @@ public class BookingRequestController {
 		@GetMapping(path="/bookings/count")
 		public Long getCount(){
 		return this.busy.getCount();
+		}
+		
+		
+		// For Search
+		
+		@GetMapping(path="/search/{searchValue}/{skip}/{limit}")
+		public List<BookingRequestBO> searchByName(@PathVariable(name="searchValue") String text,@PathVariable("skip") long skip,@PathVariable("limit") int limit )
+		{
+			Query query = new Query();
+			
+			query.limit(limit).skip(skip);
+			
+			 Criteria criteria1 = Criteria.where("status").is("booked");
+				query.addCriteria(criteria1);
+				
+				Criteria criteria2 = Criteria.where("driverName").regex(text, "i");
+				query.addCriteria(criteria2);
+				
+				return this.busy.searchByName(query);
 		}
 	
 

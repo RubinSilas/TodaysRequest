@@ -92,4 +92,13 @@ public class BookingRequestBL {
 		return this.data.findAllBooking(query);
 	}
 
+
+
+
+
+	public List<BookingRequestBO> searchByName(Query query) {
+		// TODO Auto-generated method stub
+		return this.data.searchByName(query);
+	}
+
 }

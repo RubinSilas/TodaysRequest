@@ -106,4 +106,13 @@ private BookingRequestRepo repo;
 		return this.template.find(query,BookingRequestBO.class,"BookingRequest4");
 	}
 
+
+
+
+
+	public List<BookingRequestBO> searchByName(Query query) {
+		// TODO Auto-generated method stub
+		return this.template.find(query,BookingRequestBO.class,"BookingRequest4");
+	}
+
 }

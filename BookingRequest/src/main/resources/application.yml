@@ -4,3 +4,4 @@ spring:
       host: localhost
       database: test
       port: 27017
+        output:    ansi:      enabled: always

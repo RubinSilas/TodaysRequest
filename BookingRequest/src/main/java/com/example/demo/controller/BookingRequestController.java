@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,8 +109,8 @@ public class BookingRequestController {
 //	        //   List<BookingRequestBO> timeFilter1=timeFilter.stream().skip(skip).limit(limit).collect(Collectors.toList());
 //	           return timeFilter;
 	    	   
-	    	   String splittedTimeSlot[] = timeSlot.split(":");
-	    	 //  System.out.println(splittedTimeSlot[0]);
+	    	   String splittedTimeSlot[] = timeSlot.split(":"); //System.out.println(timeSlot);
+	    	  // System.out.println(splittedTimeSlot[0]);
 	    	   Criteria timeSlotCriteria =     Criteria.where("timeSlot").is(LocalTime.of(Integer.parseInt(splittedTimeSlot[0]), Integer.parseInt(splittedTimeSlot[1]), Integer.parseInt(splittedTimeSlot[2]))); 
 	    	    
 		          dynamicQuery.addCriteria(timeSlotCriteria);
@@ -120,7 +121,7 @@ public class BookingRequestController {
 	       
 	       List<BookingRequestBO> result=this.busy.filterRequests(dynamicQuery);
 	       
-
+	      // System.out.println(result.size());
 	      return result;
 	   }
 	
@@ -131,10 +132,10 @@ public class BookingRequestController {
 		Query query = new Query();
 //		query.limit(limit).skip(skip);
 		Criteria sourceCriteria = Criteria.where("status").is("booked");
-		Criteria sourceCriteria1 = Criteria.where("timeSlot").is(LocalTime.of(00, 00, 00));
+		Criteria sourceCriteria1 = Criteria.where("timeSlot").is(LocalTime.of(0, 0,0));
 		query.addCriteria(sourceCriteria);
 		query.addCriteria(sourceCriteria1);
-		
+		System.out.println(query.toString());
 		return this.busy.filterRequests(query);
 
 		
@@ -200,7 +201,7 @@ public class BookingRequestController {
 			 Criteria criteria1 = Criteria.where("status").is("booked");
 				query.addCriteria(criteria1);
 				
-				Criteria criteria2 = Criteria.where("driverName").regex(text, "i");
+				Criteria criteria2 = Criteria.where("employeeName").regex(text, "i");
 				query.addCriteria(criteria2);
 				
 				return this.busy.searchByName(query);

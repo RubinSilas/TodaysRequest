@@ -58,7 +58,7 @@ private BookingRequestRepo repo;
 
 	public List<BookingRequestBO> filterRequests(Query dynamicQuery) 
 	{
-		return this.template.find(dynamicQuery, BookingRequestBO.class,"BookingRequest4");
+		return this.template.find(dynamicQuery, BookingRequestBO.class,"BookingRequest5");
 	}
 
 
@@ -103,7 +103,7 @@ private BookingRequestRepo repo;
 
 	public List<BookingRequestBO> findAllBooking(Query query) {
 		// TODO Auto-generated method stub
-		return this.template.find(query,BookingRequestBO.class,"BookingRequest4");
+		return this.template.find(query,BookingRequestBO.class,"BookingRequest5");
 	}
 
 
@@ -112,7 +112,7 @@ private BookingRequestRepo repo;
 
 	public List<BookingRequestBO> searchByName(Query query) {
 		// TODO Auto-generated method stub
-		return this.template.find(query,BookingRequestBO.class,"BookingRequest4");
+		return this.template.find(query,BookingRequestBO.class,"BookingRequest5");
 	}
 
 }

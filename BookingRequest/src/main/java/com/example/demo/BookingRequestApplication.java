@@ -48,10 +48,10 @@ public class BookingRequestApplication {
 							
 							
 							BookingRequestBO booking=new BookingRequestBO(1001001,101, "Ruby", "Alpha City", "Tambaram", "Medavakkam", LocalTime.of(8, 30),LocalTime.of(7,30), "booked");
-							repo.save(booking);
+							//repo.save(booking);
 							
 							SourceBO source1=new SourceBO(101,"Alpha City");
-							repo1.save(source1);
+						//	repo1.save(source1);
 							
 							DropPointsBO point1=new DropPointsBO("Sholingnallur");
 							DropPointsBO point2=new DropPointsBO("Medavakkam");
@@ -68,7 +68,7 @@ public class BookingRequestApplication {
 							list2.add(slot3);
 							
 							DestinationBO dest1=new DestinationBO(12122,"Tambaram",list1,list2);
-							repo2.save(dest1); 
+						//	repo2.save(dest1); 
 					
 							
 							

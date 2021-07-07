@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection="BookingRequest4")
+@Document(collection="BookingRequest5")
 public class BookingRequestBO {
 	
 	@Id

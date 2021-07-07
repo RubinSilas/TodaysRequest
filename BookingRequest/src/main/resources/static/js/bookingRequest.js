@@ -3,14 +3,19 @@ var xmlGetAllRequests=new XMLHttpRequest();
 var xmlGetAllSources=new XMLHttpRequest();
 var xmlGetAllDestinations=new XMLHttpRequest();
 var xmlGetFilteredRequests=new XMLHttpRequest();
-
+var xhrSearch = new XMLHttpRequest();
 var xhrCount= new XMLHttpRequest();
-var filterApplied=false;
-var skip=0;     
-var limit=10; 
+var filterApplied;
+var searchApplied=false;
+var skip;     
+var limit; 
 var count;
 
 // To get Count of all the records with status booked
+
+window.onload=loadMethods; 
+
+getTotalCount();
 
 function getTotalCount(){
 xhrCount.open("GET","http://localhost:8080/bookingRequest/bookings/count",true);
@@ -26,7 +31,7 @@ count= JSON.parse(xhrCount.responseText);
 }
 }
 
-getTotalCount();
+
 
 ///
 
@@ -51,7 +56,7 @@ function getDate(){
 
 ///
 
-window.onload=loadMethods;   // To load Contents when the page is opened
+  
 
 // To load Today's Requests while switching tabs
 
@@ -91,7 +96,7 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
 function loadMethods()     // To load Today Bookings, source and Destination on Page Load
 {
 	
-	
+	skip=0; limit=10;
 	getTodaysBookings();
 	getSource();
 	getDestination();
@@ -120,9 +125,11 @@ var cancelbtn=document.getElementById("cancelButton");
     	
     	$("#tableBody").empty();
     	skip=0;filterApplied=false;
-    	getTodaysBookings();
+    	
     	var filter=document.getElementById("filterButton");
     	filter.setAttribute('src','images/Vector.svg');
+    	
+    	getTodaysBookings();
     	
     });
     
@@ -139,14 +146,19 @@ if ($("#scrollTable").scrollTop() + $("#scrollTable").height() > $(
 "#tableBody").height()) {
 
 skip = skip + limit;
-if(filterApplied==false){
+if(searchApplied==true)
+{
+	getBySearch();
+}
+
+else if(filterApplied==false){
 getTodaysBookings();
-}else{
+}else if(filterApplied==true){
 	//scrolled=true;
 	
 getfilter();
 //scrolled=false;
-filterApplied =true;
+//filterApplied =true;
 
 
 }
@@ -160,6 +172,8 @@ filterApplied =true;
 // Load Today Bookings 
 
 function getTodaysBookings(){
+
+	//alert(skip);
 	
 	xmlGetAllRequests.open("GET","http://localhost:8080/bookingRequest/bookings/todayBookings/"+skip+"/"+limit,true);
 	xmlGetAllRequests.onreadystatechange=todayBookingResponse;
@@ -470,16 +484,20 @@ document.getElementById("Destination").addEventListener('change',function()
 
 document.getElementById("ApplyButton").addEventListener('click',function()
 {
-	$("#tableBody").empty();skip=0;filterApplied=true;
-	getfilter();
+	$("#tableBody").empty();
+	skip=0;
+	//limit=10;
+	filterApplied=true;
+	
 	changeFilter();
+	getfilter();
 	
 });
 
 function getfilter()
 {
 	
-		
+		//alert(skip);
 		//skip=0;
 		//filterApplied=true;
 		//$("#tableBody").empty();
@@ -581,7 +599,7 @@ function getFilters()
 		
 		
 		var filteredRequest=JSON.parse(xmlGetFilteredRequests.responseText);
-	//	alert(filteredRequest.length);
+		//alert(filteredRequest.length);
 		for(var i=0;i<filteredRequest.length;i++)
 		{
 			var trow=document.createElement('tr');
@@ -722,5 +740,176 @@ else
 
 }
 
+document.getElementById("searchTab").addEventListener("keyup", function (event) {
+    		
+             if (event.keyCode == 13) {
+             
+             	filterApplied=false;
+             	searchApplied=true;
+             	skip=0;
+             	var filter=document.getElementById("filterButton");
+    			filter.setAttribute('src','images/Vector.svg');
+    			
+            	 getBySearch();
+            	 
+             }
+         });
+         
+document.getElementById("addon-wrapping").addEventListener("click", function() {
+    		
+             	filterApplied=false;
+             	searchApplied=true;
+             	skip=0;
+             	var filter=document.getElementById("filterButton");
+    			filter.setAttribute('src','images/Vector.svg');
+    			
+            	 getBySearch();
+             
+         });         
+         
+  function getBySearch(){
+    	 
+     
+    	 var searchtxt=document.getElementById("searchTab").value.trim();
+    	 
+    	 if(searchtxt==null || searchtxt=="" || searchtxt== undefined){
+    	 
+    	 	searchApplied=false;
+    	 	skip=0;
+    		 
+    		 $("#tableBody").empty();
+    		getTodaysBookings(); 
+    	 }
+    	 xhrSearch.open("GET","http://localhost:8080/bookingRequest/search/"+searchtxt+"/"+skip+"/"+limit,true);
+         xhrSearch.onreadystatechange=processResponseSearch;
+       
+         xhrSearch.send(null);
+     }        
+
+function processResponseSearch()
+{
+		if(xhrSearch.readyState == 4 && xhrSearch.status == 200)
+		{
+			$("#tableBody").empty();
+			var arr = JSON.parse(xhrSearch.responseText);
+			
+			for(var i=0;i<arr.length;i++)
+		{
+			var trow=document.createElement('tr');
+			trow.className="row-bg-style";
+			
+			var tdata=document.createElement('td');
+			tdata.className="spacing";
+			tdata.innerHTML=
+			
+			"<input class='form-check-input check' type='checkbox' value='' id='flex-check'>"+
+                 " <label class='form-check-label' for='flexCheckChecked'></label>";
+                 
+            var tdata1=document.createElement('td');
+			tdata1.className="spacing";  
+			tdata1.innerHTML=arr[i].employeeID; 
+			
+			var tdata2=document.createElement('td');
+			tdata2.className="spacing";  
+			tdata2.innerHTML=arr[i].employeeName; 
+			
+			var tdata3=document.createElement('td');
+			tdata3.className="spacing";  
+			tdata3.innerHTML=arr[i].source; 
+			
+			var tdata4=document.createElement('td');
+			tdata4.className="spacing";  
+			tdata4.innerHTML=arr[i].destination; 
+			
+			var tdata5=document.createElement('td');
+			tdata5.className="spacing";  
+			tdata5.innerHTML=arr[i].dropPoint; 
+			
+			var tdata6=document.createElement('td');
+			tdata6.className="spacing";   
+			
+			var slot = arr[i].bookingTime; 
+			var slotSplitted = slot.split(":");
+			slotHour = slotSplitted[0];
+			
+		if(slotHour<12)
+		{
+		if(slotHour==00)
+		{
+		tdata6.innerHTML = "12"+":"+slotSplitted[1]+" AM";
+		}
+		else
+		{
+		tdata6.innerHTML = slotHour+":"+slotSplitted[1]+" AM";
+		}
+		}
+		else
+		{
+		slotHour = slotHour-12;
+		if(slotHour < 10)
+		{
+		tdata6.innerHTML = "0"+slotHour+":"+slotSplitted[1]+" PM";
+		}
+		else{
+		tdata6.innerHTML = slotHour+":"+slotSplitted[1]+" PM";
+		}
+		}
+
+			
+			
+			var tdata7=document.createElement('td');
+			tdata7.className="spacing";  
+			
+			var slot = arr[i].timeSlot; 
+			var slotSplitted = slot.split(":");
+			slotHour = slotSplitted[0];
+			
+			
+		if(slotHour<12)
+		{
+		if(slotHour==00)
+		{
+		tdata7.innerHTML = "12"+":"+slotSplitted[1]+" AM";
+		}
+		else
+		{
+		tdata7.innerHTML = slotHour+":"+slotSplitted[1]+" AM";
+		}
+		}
+		else
+		{
+		slotHour = slotHour-12;
+		if(slotHour < 10)
+		{
+		tdata7.innerHTML = "0"+slotHour+":"+slotSplitted[1]+" PM";
+		}
+		else{
+		tdata7.innerHTML = slotHour+":"+slotSplitted[1]+" PM";
+		}
+		}
+ 
+			
+			
+			trow.appendChild(tdata);
+			trow.appendChild(tdata1);
+			trow.appendChild(tdata2);
+			trow.appendChild(tdata3);
+			trow.appendChild(tdata4);
+			trow.appendChild(tdata5);
+			trow.appendChild(tdata6);
+			trow.appendChild(tdata7);
+			
+			document.getElementById("tableBody").appendChild(trow);
+			
+			
+			
+			
+		}
+		var countSpan=document.getElementById("counter");
+			countSpan.innerHTML=$('#tableBody tr').length+" out of "+count;
+			
+		}
+
+}
 
 

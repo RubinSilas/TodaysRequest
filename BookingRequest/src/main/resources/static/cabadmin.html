@@ -227,9 +227,12 @@
       </div>
       <!--search ends here-->
       <!--button starts here-->
-      <button type="button" class="btn btn-primary btn-sm button new-proj" data-toggle="modal"
+      
+      
+      <button type="button" class="btn btn-primary btn-sm button new-proj " data-toggle="modal"
         data-target="#assign-to-cab">Assign To Cab</button>
-
+        
+<span id="topScrollButton" class="absolute-btn"><img src="images/Scrollup.svg" id="ScrollUp"></span>
     </div>
   
     <!--button ends here-->
@@ -238,7 +241,8 @@
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active" id="pills-todaysrequest" role="tabpanel"
         aria-labelledby="pills-todaysrequest-tab">
-        <div class="w-100 float-start border fixTableHead table-scroll" id="scrollTable">
+        <!--  <div class="w-100 float-start border fixTableHead table-scroll" id="scrollTable">  -->
+        <div class="w-100 float-start border " id="scrollTable">
           <table class="table mb-0 caps-grid">
             <thead>
               <tr class="display-shadow">
@@ -277,7 +281,9 @@
           <div class="header-left py-md-3">
             <span class="font-records"># Records:</span>
             <span class="regular" id="counter"></span>
+            
           </div>
+          
           <!--total content display ends here-->
 
         </div>

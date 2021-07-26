@@ -1007,4 +1007,17 @@ body {
 	border-radius: 5px;
 
 }
+
+.absolute-btn
+{
+	position:fixed;
+	padding-left:12px;
+	margin-top:38.5%;
+	cursor:pointer;
+}
+
+.topButton
+{
+	float:right;
+}
 /** button style popup ends**/

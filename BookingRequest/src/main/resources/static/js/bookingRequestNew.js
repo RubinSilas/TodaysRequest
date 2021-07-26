@@ -181,13 +181,41 @@ var cancelbtn=document.getElementById("cancelButton");
 
 // Scroll function
 
-document.getElementById("scrollTable").addEventListener(
-				'scroll',
-				function() {
-					
-					if ($("#scrollTable")[0].scrollHeight-$("#scrollTable").scrollTop()==$("#scrollTable").height())   {
-						if($('#tableBody tr').length != count){
-						skip = skip + limit;
+//document.getElementById("scrollTable").addEventListener(
+//				'scroll',
+//				function() {
+//					
+//					if ($("#scrollTable")[0].scrollHeight-$("#scrollTable").scrollTop()==$("#scrollTable").height())   {
+//						if($('#tableBody tr').length != count){
+//						skip = skip + limit;
+//						if(filterApplied==false){
+//						getTodaysBookings();
+//						}else if(searchApplied==true){
+//							
+//						    getBySearch()
+//							}else if(filterApplied==true){
+//						
+//							getfilter(); 
+//						 
+//						}
+//					}
+//					else{
+//						skip=0;
+//					
+//					}
+//					}
+//				});
+
+
+window.addEventListener('scroll',()=>{
+    console.log(window.scrollY) //scrolled from top
+    console.log(window.innerHeight) //visible part of screen
+    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+//	skip = skip + limit;alert(skip);
+//    getTodaysBookings();
+
+if($('#tableBody tr').length != count){
+						skip = skip + limit; 
 						if(filterApplied==false){
 						getTodaysBookings();
 						}else if(searchApplied==true){
@@ -203,11 +231,8 @@ document.getElementById("scrollTable").addEventListener(
 						skip=0;
 					
 					}
-					}
-				});
-
-
-
+    }
+})
 
 
 
@@ -1001,5 +1026,9 @@ function processResponseSearch()
 		}
 
 }
+
+$("#ScrollUp").click( function() {
+   $(window).scrollTop(0);
+ });
 
 

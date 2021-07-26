@@ -51,7 +51,13 @@ function getDate(){
 
 		const date=new Date();
 		const n=date.getDate(); const n1=date.getMonth()+1; const n2=date.getFullYear();
+		if(n1<10)
+		{
+			document.getElementById("todayDate").innerHTML="Date of Travel: "+n+"/0"+n1+"/"+n2;
+		}
+		else{
 		document.getElementById("todayDate").innerHTML="Date of Travel: "+n+"/"+n1+"/"+n2;
+		}
 
 }
 
@@ -88,6 +94,8 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
 	getTodaysBookings();
 	var filter=document.getElementById("filterButton");
     	filter.setAttribute('src','images/Vector.svg');
+    	
+    	document.getElementById("searchTab").value=null;
 	
 });
 

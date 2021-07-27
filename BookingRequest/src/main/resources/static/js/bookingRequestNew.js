@@ -96,6 +96,7 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
     	filter.setAttribute('src','images/Vector.svg');
     	
     	document.getElementById("searchTab").value=null;
+    	document.getElementById("topScrollButton").setAttribute("hidden",false);
 	
 });
 
@@ -210,7 +211,7 @@ var cancelbtn=document.getElementById("cancelButton");
 window.addEventListener('scroll',()=>{
     console.log(window.scrollY) //scrolled from top
     console.log(window.innerHeight) //visible part of screen
-    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight-50){
 //	skip = skip + limit;alert(skip);
 //    getTodaysBookings();
 

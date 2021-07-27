@@ -96,7 +96,7 @@ document.getElementById("pills-todaysrequest-tab").addEventListener('click',func
     	filter.setAttribute('src','images/Vector.svg');
     	
     	document.getElementById("searchTab").value=null;
-    	document.getElementById("topScrollButton").setAttribute("hidden",false);
+    	document.getElementById("topScrollButton").setAttribute("block",true);
 	
 });
 
